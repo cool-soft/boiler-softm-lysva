@@ -6,9 +6,7 @@ from boiler.data_processing.timestamp_parsing_algorithm import AbstractTimestamp
 from boiler.heating_obj.io.abstract_sync_heating_obj_reader import AbstractSyncHeatingObjReader
 
 import boiler_softm_lysva.constants.converting_parameters
-from boiler_softm_lysva.constants import circuit_ids
 from boiler_softm_lysva.constants import column_names as soft_m_column_names
-from boiler_softm_lysva.constants import processing
 from boiler_softm_lysva.logging import logger
 
 

@@ -6,8 +6,6 @@ from boiler.temp_graph.io.abstract_sync_temp_graph_reader import AbstractSyncTem
 import boiler_softm_lysva.constants.converting_parameters
 from boiler_softm_lysva.logging import logger
 
-from boiler_softm_lysva.constants import processing
-
 
 class SoftMLysvaSyncTempGraphOnlineReader(AbstractSyncTempGraphReader):
 
