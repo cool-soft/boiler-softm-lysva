@@ -6,11 +6,9 @@ import pandas as pd
 from boiler.constants import column_names
 from boiler.weather.io.abstract_sync_weather_reader import AbstractSyncWeatherReader
 
-import boiler_softm_lysva.constants.converting_parameters
-from boiler_softm_lysva.logging import logger
-
 import boiler_softm_lysva.constants.column_names as soft_m_column_names
-import boiler_softm_lysva.constants.processing
+from boiler_softm_lysva.constants import converting_parameters
+from boiler_softm_lysva.logging import logger
 
 
 class SoftMLysvaSyncWeatherForecastOnlineReader(AbstractSyncWeatherReader):
@@ -21,8 +19,7 @@ class SoftMLysvaSyncWeatherForecastOnlineReader(AbstractSyncWeatherReader):
                  ) -> None:
         self._weather_data_timezone = weather_data_timezone
         self._encoding = encoding
-
-        self._column_names_equals = boiler_softm_lysva.constants.converting_parameters.WEATHER_INFO_COLUMN_EQUALS
+        self._column_names_equals = converting_parameters.WEATHER_INFO_COLUMN_EQUALS
 
         logger.debug(
             f"Creating instance:"
@@ -34,14 +31,10 @@ class SoftMLysvaSyncWeatherForecastOnlineReader(AbstractSyncWeatherReader):
         logger.debug("Parsing weather")
         with io.TextIOWrapper(binary_stream, encoding=self._encoding) as text_stream:
             df = pd.read_json(text_stream, convert_dates=False)
-        self._rename_columns(df)
+        df.rename(columns=self._column_names_equals, inplace=True)
         self._convert_date_and_time_to_timestamp(df)
         logger.debug("Weather is parsed")
         return df
-
-    def _rename_columns(self, df: pd.DataFrame) -> None:
-        logger.debug("Renaming columns")
-        df.rename(columns=self._column_names_equals, inplace=True)
 
     def _convert_date_and_time_to_timestamp(self, df: pd.DataFrame) -> None:
         logger.debug("Converting dates and time to timestamp")
