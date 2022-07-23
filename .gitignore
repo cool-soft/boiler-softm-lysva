@@ -1,0 +1,10 @@
+.idea/
+venv/
+**/__pycache__/
+*.py[cod]
+src/*.egg-info/
+.coverage
+coverage-report-html/
+coverage-report.xml
+.pytest_cache
+pytest-report.html
