@@ -9,14 +9,15 @@ jobs:
       SOCKS_PROXY_PORT: 8080
       SSH_PROXY_ADDRESS: ${{secrets.SOFT_M_SSH_PROXY_ADDRESS}}
       SSH_PROXY_PRIVATE_KEY: ${{secrets.SOFT_M_SSH_PROXY_KEY}}
-      SSH_PROXY_PRIVATE_KEY_PATH: ~/.ssh/id_rsa
       TEST_WITH_PROXY: True
       COVERAGE_HTML_REPORT_PATH: /tmp/coverage_html_report
       COVERAGE_XML_REPORT_PATH: /tmp/coverage_xml_report.xml
       PYTEST_REPORT_PATH: /tmp/pytest_report.html
     steps:
       - name: "Save ssh private key to file"
-        run: printenv SSH_PROXY_PRIVATE_KEY > ${{env.SSH_PROXY_PRIVATE_KEY_PATH}}
+        run: |
+          mkdir ~/.ssh
+          printenv SSH_PROXY_PRIVATE_KEY > ~/.ssh/id_rsa
 #      - name: "Run pproxy in background"
 #        run: |
 #          docker run \
