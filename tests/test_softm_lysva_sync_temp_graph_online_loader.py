@@ -3,9 +3,9 @@ from boiler.constants import column_names
 # noinspection PyProtectedMember
 from pandas.api.types import is_numeric_dtype
 
-from boiler_softm_lysva.temp_graph.io.soft_m_lysva_sync_temp_graph_online_loader \
+from boiler_softm_lysva.temp_graph.io.softm_lysva_sync_temp_graph_online_loader \
     import SoftMLysvaSyncTempGraphOnlineLoader
-from boiler_softm_lysva.temp_graph.io.soft_m_lysva_sync_temp_graph_online_reader \
+from boiler_softm_lysva.temp_graph.io.softm_lysva_sync_temp_graph_online_reader \
     import SoftMLysvaSyncTempGraphOnlineReader
 
 
