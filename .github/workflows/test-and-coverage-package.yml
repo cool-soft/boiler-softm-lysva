@@ -20,6 +20,7 @@ jobs:
           mkdir ~/.ssh
           echo ${{SSH_PROXY_PRIVATE_KEY}} > ~/.ssh/id_rsa
           ssh-keyscan -H ${{env.SSH_PROXY_ADDRESS}} > ~/.ssh/known_hosts
+
 #      - name: "Run pproxy in background"
 #        run: |
 #          docker run \
@@ -30,6 +31,7 @@ jobs:
 #            mosajjal/pproxy:latest \
 #            -l http://:${{env.HTTP_PROXY_PORT}} \
 #            -r ssh://${{env.SSH_PROXY_ADDRESS}}/#root::${{env.SSH_PROXY_PRIVATE_KEY_PATH}}
+
       - name: "Start socks over ssh proxy"
         run: ssh -fCN -D${{env.SOCKS_PROXY_PORT}} root@${{env.SSH_PROXY_ADDRESS}} -p ${{env.SSH_PROXY_PORT}}
       - name: "Checkout repository"
