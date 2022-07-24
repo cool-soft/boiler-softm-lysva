@@ -18,7 +18,7 @@ jobs:
       - name: "Preparing to start ssh proxy"
         run: |
           mkdir ~/.ssh
-          echo ${{env.SSH_PROXY_PRIVATE_KEY}} > ~/.ssh/id_rsa
+          printenv SSH_PROXY_PRIVATE_KEY > ~/.ssh/id_rsa
           ssh-keyscan -H ${{env.SSH_PROXY_ADDRESS}} > ~/.ssh/known_hosts
 
 #      - name: "Run pproxy in background"
