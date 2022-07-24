@@ -19,7 +19,7 @@ jobs:
         run: |
           mkdir ~/.ssh
           printenv SSH_PROXY_PRIVATE_KEY > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{env.SSH_PROXY_ADDRESS}} > ~/.ssh/known_hosts
+          ssh-keyscan ${{env.SSH_PROXY_ADDRESS}} > ~/.ssh/known_hosts
 
 #      - name: "Run pproxy in background"
 #        run: |
