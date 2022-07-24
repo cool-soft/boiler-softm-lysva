@@ -5,11 +5,11 @@ jobs:
   test-and-coverage-package:
     runs-on: ubuntu-latest
     env:
-      HTTP_PROXY_ADDRESS: "localhost"
-      HTTP_PROXY_PORT: 8080
+      SOCKS_PROXY_ADDRESS: "localhost"
+      SOCKS_PROXY_PORT: 8080
       SSH_PROXY_ADDRESS: ${{secrets.SOFT_M_SSH_PROXY_ADDRESS}}
       SSH_PROXY_PRIVATE_KEY: ${{secrets.SOFT_M_SSH_PROXY_KEY}}
-      SSH_PROXY_PRIVATE_KEY_PATH: /tmp/id_rsa
+      SSH_PROXY_PRIVATE_KEY_PATH: ~/.ssh/id_rsa
       TEST_WITH_PROXY: True
       COVERAGE_HTML_REPORT_PATH: /tmp/coverage_html_report
       COVERAGE_XML_REPORT_PATH: /tmp/coverage_xml_report.xml
@@ -17,16 +17,18 @@ jobs:
     steps:
       - name: "Save ssh private key to file"
         run: printenv SSH_PROXY_PRIVATE_KEY > ${{env.SSH_PROXY_PRIVATE_KEY_PATH}}
-      - name: "Run pproxy in background"
-        run: |
-          docker run \
-            --rm=true \
-            -d \
-            -p ${{env.HTTP_PROXY_PORT}}:${{env.HTTP_PROXY_PORT}} \
-            --volume ${{env.SSH_PROXY_PRIVATE_KEY_PATH}}:${{env.SSH_PROXY_PRIVATE_KEY_PATH}} \
-            mosajjal/pproxy:latest \
-            -l http://:${{env.HTTP_PROXY_PORT}} \
-            -r ssh://${{env.SSH_PROXY_ADDRESS}}/#root::${{env.SSH_PROXY_PRIVATE_KEY_PATH}}
+#      - name: "Run pproxy in background"
+#        run: |
+#          docker run \
+#            --rm=true \
+#            -d \
+#            -p ${{env.HTTP_PROXY_PORT}}:${{env.HTTP_PROXY_PORT}} \
+#            --volume ${{env.SSH_PROXY_PRIVATE_KEY_PATH}}:${{env.SSH_PROXY_PRIVATE_KEY_PATH}} \
+#            mosajjal/pproxy:latest \
+#            -l http://:${{env.HTTP_PROXY_PORT}} \
+#            -r ssh://${{env.SSH_PROXY_ADDRESS}}/#root::${{env.SSH_PROXY_PRIVATE_KEY_PATH}}
+      - name: "Start socks over ssh proxy"
+        run: ssh -f -C2qTnN -D ${{env.SOCKS_PROXY_PORT}} root@${{env.SSH_PROXY_ADDRESS}}
       - name: "Checkout repository"
         uses: actions/checkout@v2
       - name: "Install python"
