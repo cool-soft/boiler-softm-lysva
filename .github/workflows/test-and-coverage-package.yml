@@ -15,10 +15,11 @@ jobs:
       COVERAGE_XML_REPORT_PATH: /tmp/coverage_xml_report.xml
       PYTEST_REPORT_PATH: /tmp/pytest_report.html
     steps:
-      - name: "Save ssh private key to file"
+      - name: "Preparing to start ssh proxy"
         run: |
           mkdir ~/.ssh
-          printenv SSH_PROXY_PRIVATE_KEY > ~/.ssh/id_rsa
+          echo ${{SSH_PROXY_PRIVATE_KEY}} > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{env.SSH_PROXY_ADDRESS}} > ~/.ssh/known_hosts
 #      - name: "Run pproxy in background"
 #        run: |
 #          docker run \
