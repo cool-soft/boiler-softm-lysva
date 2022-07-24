@@ -29,7 +29,7 @@ jobs:
 #            -l http://:${{env.HTTP_PROXY_PORT}} \
 #            -r ssh://${{env.SSH_PROXY_ADDRESS}}/#root::${{env.SSH_PROXY_PRIVATE_KEY_PATH}}
       - name: "Start socks over ssh proxy"
-        run: ssh -f -C2qTnN -D ${{env.SOCKS_PROXY_PORT}} root@${{env.SSH_PROXY_ADDRESS}}
+        run: ssh -fCN -D${{env.SOCKS_PROXY_PORT}} root@${{env.SSH_PROXY_ADDRESS}}
       - name: "Checkout repository"
         uses: actions/checkout@v2
       - name: "Install python"
