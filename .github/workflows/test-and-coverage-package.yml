@@ -8,6 +8,7 @@ jobs:
       SOCKS_PROXY_ADDRESS: "localhost"
       SOCKS_PROXY_PORT: 8080
       SSH_PROXY_ADDRESS: ${{secrets.SOFT_M_SSH_PROXY_ADDRESS}}
+      SSH_PROXY_PORT: ${{secrets.SOFT_M_SSH_PROXY_PORT}}
       SSH_PROXY_PRIVATE_KEY: ${{secrets.SOFT_M_SSH_PROXY_KEY}}
       TEST_WITH_PROXY: True
       COVERAGE_HTML_REPORT_PATH: /tmp/coverage_html_report
@@ -29,7 +30,7 @@ jobs:
 #            -l http://:${{env.HTTP_PROXY_PORT}} \
 #            -r ssh://${{env.SSH_PROXY_ADDRESS}}/#root::${{env.SSH_PROXY_PRIVATE_KEY_PATH}}
       - name: "Start socks over ssh proxy"
-        run: ssh -fCN -D${{env.SOCKS_PROXY_PORT}} root@${{env.SSH_PROXY_ADDRESS}}
+        run: ssh -fCN -D${{env.SOCKS_PROXY_PORT}} root@${{env.SSH_PROXY_ADDRESS}} -p {{env.SSH_PROXY_PORT}}
       - name: "Checkout repository"
         uses: actions/checkout@v2
       - name: "Install python"
