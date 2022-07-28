@@ -2,7 +2,6 @@ import pytest
 from boiler.constants import column_names
 # noinspection PyProtectedMember
 from pandas.api.types import is_numeric_dtype, is_datetime64tz_dtype
-from dateutil.tz import gettz
 
 from boiler_softm_lysva.weather.io import SoftMLysvaSyncWeatherForecastOnlineLoader, \
     SoftMLysvaSyncWeatherForecastOnlineReader
@@ -12,7 +11,7 @@ class TestSoftMLysvaSyncWeatherForecastOnlineLoader:
 
     @pytest.fixture
     def reader(self):
-        return SoftMLysvaSyncWeatherForecastOnlineReader(weather_data_timezone=gettz("Asia/Yekaterinburg"))
+        return SoftMLysvaSyncWeatherForecastOnlineReader()
 
     @pytest.fixture
     def loader(self, reader, is_need_proxy, proxy_address):

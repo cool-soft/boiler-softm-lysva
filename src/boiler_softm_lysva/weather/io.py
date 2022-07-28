@@ -9,6 +9,7 @@ from boiler.data_processing.beetween_filter_algorithm import AbstractTimestampFi
     LeftClosedTimestampFilterAlgorithm
 from boiler.weather.io.abstract_sync_weather_loader import AbstractSyncWeatherLoader
 from boiler.weather.io.abstract_sync_weather_reader import AbstractSyncWeatherReader
+from dateutil.tz import gettz
 
 from boiler_softm_lysva.constants import api_constants, converting_parameters, column_names as soft_m_column_names
 from boiler_softm_lysva.logging import logger
@@ -66,7 +67,7 @@ class SoftMLysvaSyncWeatherForecastOnlineReader(AbstractSyncWeatherReader):
 
     def __init__(self,
                  encoding: str = "utf-8",
-                 weather_data_timezone: tzinfo = None
+                 weather_data_timezone: tzinfo = gettz("Asia/Yekaterinburg")
                  ) -> None:
         self._weather_data_timezone = weather_data_timezone
         self._encoding = encoding
