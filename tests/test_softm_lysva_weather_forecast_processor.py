@@ -11,7 +11,7 @@ from boiler.data_processing.value_interpolation_algorithm import LinearOutsideVa
 from boiler_softm_lysva.constants.time_tick import TIME_TICK
 from boiler_softm_lysva.weather.io import SoftMLysvaSyncWeatherForecastOnlineLoader, \
     SoftMLysvaSyncWeatherForecastOnlineReader
-from boiler_softm_lysva.weather.processing import SoftMWeatherProcessor
+from boiler_softm_lysva.weather.processing import SoftMLysvaWeatherForecastProcessor
 
 
 class TestSoftMWeatherProcessor:
@@ -44,7 +44,7 @@ class TestSoftMWeatherProcessor:
 
     @pytest.fixture
     def processor(self, timestamp_round_algorithm):
-        return SoftMWeatherProcessor(
+        return SoftMLysvaWeatherForecastProcessor(
             timestamp_round_algorithm=timestamp_round_algorithm,
             timestamp_interpolation_algorithm=TimestampInterpolationAlgorithm(
                 timestamp_round_algorithm,

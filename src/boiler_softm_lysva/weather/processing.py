@@ -10,7 +10,7 @@ from boiler.weather.processing import AbstractWeatherProcessor
 from boiler_softm_lysva.logging import logger
 
 
-class SoftMWeatherProcessor(AbstractWeatherProcessor):
+class SoftMLysvaWeatherForecastProcessor(AbstractWeatherProcessor):
 
     def __init__(self,
                  timestamp_round_algorithm: AbstractTimestampRoundAlgorithm,
