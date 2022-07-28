@@ -2,24 +2,37 @@ from typing import Union
 
 import pandas as pd
 from boiler.constants import column_names
-from boiler.data_processing.beetween_filter_algorithm import AbstractTimestampFilterAlgorithm
-from boiler.data_processing.timestamp_interpolator_algorithm import AbstractTimestampInterpolationAlgorithm
-from boiler.data_processing.timestamp_round_algorithm import AbstractTimestampRoundAlgorithm
-from boiler.data_processing.value_interpolation_algorithm import AbstractValueInterpolationAlgorithm
+from boiler.data_processing.beetween_filter_algorithm import AbstractTimestampFilterAlgorithm, \
+    LeftClosedTimestampFilterAlgorithm
+from boiler.data_processing.timestamp_interpolator_algorithm import AbstractTimestampInterpolationAlgorithm, \
+    TimestampInterpolationAlgorithm
+from boiler.data_processing.timestamp_round_algorithm import AbstractTimestampRoundAlgorithm, \
+    CeilTimestampRoundAlgorithm
+from boiler.data_processing.value_interpolation_algorithm import AbstractValueInterpolationAlgorithm, \
+    LinearInsideValueInterpolationAlgorithm, LinearOutsideValueInterpolationAlgorithm
 from boiler.weather.processing import AbstractWeatherProcessor
+
+from boiler_softm_lysva.constants.time_tick import TIME_TICK
 from boiler_softm_lysva.logging import logger
 
 
 class SoftMLysvaWeatherForecastProcessor(AbstractWeatherProcessor):
 
     def __init__(self,
-                 timestamp_round_algorithm: AbstractTimestampRoundAlgorithm,
-                 timestamp_interpolation_algorithm: AbstractTimestampInterpolationAlgorithm,
-                 timestamp_filter_algorithm: AbstractTimestampFilterAlgorithm,
-                 border_values_interpolation_algorithm: AbstractValueInterpolationAlgorithm,
-                 internal_values_interpolation_algorithm: AbstractValueInterpolationAlgorithm
+                 timestamp_round_algorithm: AbstractTimestampRoundAlgorithm =
+                 CeilTimestampRoundAlgorithm(round_step=TIME_TICK),
+                 timestamp_interpolation_algorithm: AbstractTimestampInterpolationAlgorithm =
+                 TimestampInterpolationAlgorithm(
+                     CeilTimestampRoundAlgorithm(round_step=TIME_TICK),
+                     TIME_TICK
+                 ),
+                 timestamp_filter_algorithm: AbstractTimestampFilterAlgorithm =
+                 LeftClosedTimestampFilterAlgorithm(),
+                 border_values_interpolation_algorithm: AbstractValueInterpolationAlgorithm =
+                 LinearInsideValueInterpolationAlgorithm(),
+                 internal_values_interpolation_algorithm: AbstractValueInterpolationAlgorithm =
+                 LinearOutsideValueInterpolationAlgorithm()
                  ) -> None:
-
         self._columns_to_interpolate = [column_names.WEATHER_TEMP]
         self._timestamp_round_algorithm = timestamp_round_algorithm
         self._timestamp_interpolation_algorithm = timestamp_interpolation_algorithm
