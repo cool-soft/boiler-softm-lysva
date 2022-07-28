@@ -1,11 +1,11 @@
-from typing import Optional
+from typing import Optional, BinaryIO
 
 import pandas as pd
 import requests
 from boiler.temp_graph.io.abstract_sync_temp_graph_loader import AbstractSyncTempGraphLoader
 from boiler.temp_graph.io.abstract_sync_temp_graph_reader import AbstractSyncTempGraphReader
 
-from boiler_softm_lysva.constants import api_constants
+from boiler_softm_lysva.constants import api_constants, converting_parameters
 from boiler_softm_lysva.logging import logger
 
 
@@ -42,3 +42,18 @@ class SoftMLysvaSyncTempGraphOnlineLoader(AbstractSyncTempGraphLoader):
             logger.debug(f"Temp graph is loaded from server. Status code is {response.status_code}")
             temp_graph_df = self._temp_graph_reader.read_temp_graph_from_binary_stream(response.raw)
         return temp_graph_df
+
+
+class SoftMLysvaSyncTempGraphOnlineReader(AbstractSyncTempGraphReader):
+
+    def __init__(self, encoding: str = "utf-8") -> None:
+        self._encoding = encoding
+        self._column_names_equal = converting_parameters.TEMP_GRAPH_COLUMN_NAMES_EQUALS
+        logger.debug(f"Creating instance. Encoding: {encoding}")
+
+    def read_temp_graph_from_binary_stream(self, binary_stream: BinaryIO) -> pd.DataFrame:
+        logger.debug("Reading temp graph")
+        df = pd.read_json(binary_stream, encoding=self._encoding)
+        df.rename(columns=self._column_names_equal, inplace=True)
+        logger.debug("Temp graph is read")
+        return df

@@ -4,10 +4,8 @@ from boiler.constants import column_names
 from pandas.api.types import is_numeric_dtype, is_datetime64tz_dtype
 from dateutil.tz import gettz
 
-from boiler_softm_lysva.weather.io.softm_lysva_sync_weather_forecast_online_loader \
-    import SoftMLysvaSyncWeatherForecastOnlineLoader
-from boiler_softm_lysva.weather.io.softm_lysva_sync_weather_forecast_online_reader \
-    import SoftMLysvaSyncWeatherForecastOnlineReader
+from boiler_softm_lysva.weather.io import SoftMLysvaSyncWeatherForecastOnlineLoader, \
+    SoftMLysvaSyncWeatherForecastOnlineReader
 
 
 class TestSoftMLysvaSyncWeatherForecastOnlineLoader:

@@ -5,7 +5,7 @@ from boiler.constants import column_names
 from boiler.data_processing.timestamp_parsing_algorithm import AbstractTimestampParsingAlgorithm
 from boiler.heating_obj.io.abstract_sync_heating_obj_reader import AbstractSyncHeatingObjReader
 
-import boiler_softm_lysva.constants.converting_parameters
+from boiler_softm_lysva.constants import converting_parameters
 from boiler_softm_lysva.constants import column_names as soft_m_column_names
 from boiler_softm_lysva.logging import logger
 
@@ -27,8 +27,8 @@ class SoftMSyncHeatingObjCSVReader(AbstractSyncHeatingObjReader):
         self._float_columns = float_columns
         self._water_temp_columns = water_temp_columns
 
-        self._circuit_id_equals = boiler_softm_lysva.constants.converting_parameters.CIRCUIT_EQUALS
-        self._column_names_equals = boiler_softm_lysva.constants.converting_parameters.HEATING_OBJ_COLUMN_NAMES_EQUALS
+        self._circuit_id_equals = converting_parameters.CIRCUIT_EQUALS
+        self._column_names_equals = converting_parameters.HEATING_OBJ_COLUMN_NAMES_EQUALS
 
         logger.debug(
             f"Creating instance:"
