@@ -1,3 +1,3 @@
-import datetime
+from datetime import timedelta
 
-TIME_TICK = datetime.timedelta(minutes=3)
+TIME_TICK = timedelta(minutes=3)

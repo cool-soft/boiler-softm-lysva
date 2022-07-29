@@ -11,9 +11,9 @@ from boiler.data_processing.timestamp_round_algorithm import AbstractTimestampRo
 from boiler.data_processing.value_interpolation_algorithm import AbstractValueInterpolationAlgorithm, \
     LinearInsideValueInterpolationAlgorithm, LinearOutsideValueInterpolationAlgorithm
 from boiler.weather.processing import AbstractWeatherProcessor
+from dateutil import tz
 
 from boiler_softm_lysva.constants.time_tick import TIME_TICK
-from boiler_softm_lysva.logging import logger
 
 
 class SoftMLysvaWeatherForecastProcessor(AbstractWeatherProcessor):
@@ -40,29 +40,27 @@ class SoftMLysvaWeatherForecastProcessor(AbstractWeatherProcessor):
         self._border_values_interpolation_algorithm = border_values_interpolation_algorithm
         self._internal_values_interpolation_algorithm = internal_values_interpolation_algorithm
 
-        logger.debug(
-            f"Creating instance:"
-            f"columns_to_interpolate: {self._columns_to_interpolate}"
-            f"timestamp_round_algorithm: {self._timestamp_round_algorithm}"
-            f"timestamp_interpolation_algorithm: {self._timestamp_interpolation_algorithm}"
-            f"timestamp_filter_algorithm: {self._timestamp_filter_algorithm}"
-            f"border_values_interpolation_algorithm: {self._border_values_interpolation_algorithm}"
-            f"internal_values_interpolation_algorithm: {self._internal_values_interpolation_algorithm}"
-        )
-
     def process_weather_df(self,
                            weather_df: pd.DataFrame,
                            min_required_timestamp: Union[pd.Timestamp, None],
                            max_required_timestamp: Union[pd.Timestamp, None]
                            ) -> pd.DataFrame:
-        logger.debug(f"Processing weather df {min_required_timestamp}, {max_required_timestamp}")
+        min_required_timestamp = min_required_timestamp.tz_convert(tz.UTC)
+        max_required_timestamp = max_required_timestamp.tz_convert(tz.UTC)
 
         weather_df = weather_df.copy()
+        weather_df = self._convert_timestamp_to_utc(weather_df)
         weather_df = self._round_timestamp(weather_df)
         weather_df = self._drop_duplicates_by_timestamp(weather_df)
         weather_df = self._interpolate_timestamp(max_required_timestamp, min_required_timestamp, weather_df)
         weather_df = self._interpolate_values(weather_df)
         weather_df = self._filter_by_timestamp(max_required_timestamp, min_required_timestamp, weather_df)
+        return weather_df
+
+    # noinspection PyMethodMayBeStatic
+    def _convert_timestamp_to_utc(self, weather_df: pd.DataFrame) -> pd.DataFrame:
+        weather_df = weather_df.copy()
+        weather_df[column_names.TIMESTAMP] = weather_df[column_names.TIMESTAMP].dt.tz_convert(tz.UTC)
         return weather_df
 
     def _round_timestamp(self,
