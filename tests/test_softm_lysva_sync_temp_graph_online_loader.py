@@ -32,9 +32,9 @@ class TestSoftMLysvaSyncTempGraphOnlineLoader:
         assert not temp_graph_df.empty
 
         assert column_names.WEATHER_TEMP in temp_graph_df.columns
-        assert column_names.FORWARD_PIPE_COOLANT_TEMP in temp_graph_df.columns
-        assert column_names.BACKWARD_PIPE_COOLANT_TEMP in temp_graph_df.columns
+        assert column_names.FORWARD_TEMP in temp_graph_df.columns
+        assert column_names.BACKWARD_TEMP in temp_graph_df.columns
 
         assert is_numeric_dtype(temp_graph_df[column_names.WEATHER_TEMP])
-        assert is_numeric_dtype(temp_graph_df[column_names.FORWARD_PIPE_COOLANT_TEMP])
-        assert is_numeric_dtype(temp_graph_df[column_names.BACKWARD_PIPE_COOLANT_TEMP])
+        assert is_numeric_dtype(temp_graph_df[column_names.FORWARD_TEMP])
+        assert is_numeric_dtype(temp_graph_df[column_names.BACKWARD_TEMP])
